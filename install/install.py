@@ -26,5 +26,10 @@ if __name__ == "__main__":
                 if not os.path.exists(new_item_parent):
                     os.makedirs(new_item_parent)
                 if os.path.isfile(symlink_path):
-                    os.remove(symlink_path)
-                os.symlink(item, symlink_path)
+                    if not os.path.islink(symlink_path):
+                        print symlink_path + ' already exists'
+                    else:
+                        os.remove(symlink_path)
+                        os.symlink(item, symlink_path)
+                else:
+                    os.symlink(item, symlink_path)
