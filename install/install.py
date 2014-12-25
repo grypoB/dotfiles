@@ -2,7 +2,6 @@ import sys
 import os
 from subprocess import call
 import subprocess
-import os.path
 import re
 
 if __name__ == "__main__":
@@ -13,8 +12,6 @@ if __name__ == "__main__":
     repo_items = find_res.stdout.readlines()
     home_folder = os.getenv("HOME")
 
-    f = open(os.path.join(script_parent, 'run_me.sh'),'w')
-
     for item in repo_items:
         item = item.strip()
         
@@ -24,13 +21,10 @@ if __name__ == "__main__":
             if os.path.isfile(item):
 
                 new_item_parent = (os.path.dirname(item)).replace(script_gparent,home_folder)
-
-                if not (new_item_parent == '~'):
-                   mkdir_cmd = "mkdir -p "+new_item_parent
-                   f.write(mkdir_cmd+'\n')
-
                 symlink_path = os.path.join(new_item_parent,item_name)
-                symlink_cmd = "ln -sf "+item+" "+symlink_path
-                f.write(symlink_cmd+'\n')
 
-    f.close()
+                if not os.path.exists(new_item_parent):
+                    os.makedirs(new_item_parent)
+                if os.path.isfile(symlink_path):
+                    os.remove(symlink_path)
+                os.symlink(item, symlink_path)
