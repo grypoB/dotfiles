@@ -16,7 +16,7 @@ if __name__ == "__main__":
         item = item.strip()
         
         item_name = os.path.basename(item)
-        if not ( re.search('\.git/',item) or re.search('\.gitignore$',item) or re.search('install', item) ):
+        if not ( re.search('\.git/',item) or re.search('\.gitignore$',item) or re.search('install', item) or re.search('README.md', item) ):
 
             if os.path.isfile(item):
 
